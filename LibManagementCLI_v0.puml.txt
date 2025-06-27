@@ -1,0 +1,97 @@
+@startuml LibManagementCLI_Diagramma
+
+title Diagramma delle Classi - LibManagementCLI
+
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam linetype ortho
+skinparam package {
+    BorderStyle solid
+    BackgroundColor #F7F7F7
+}
+hide empty members
+
+' --- Legenda ---
+note as Legend
+  <b>Legenda delle Relazioni</b>
+  <|-- : Ereditarietà/Implementazione
+  -->  : Dipendenza
+end note
+
+' --- Package e Classi ---
+package "main" {
+    class Main
+}
+
+package "ui" {
+    class CommandLineInterface
+}
+
+package "service" {
+    class LibraryService <<Singleton>>
+    interface SortStrategy <<Strategy>>
+    class SortByTitleStrategy
+    class SortByAuthorStrategy
+}
+
+package "dao" {
+    interface StorageService
+    class FileStorageService
+}
+
+package "model" {
+    interface LibraryItem
+    class Book
+    class BookCollection
+    class BookBuilder <<Builder>>
+    enum LogLevel
+}
+
+package "factory" {
+    class BookFactory <<Factory>>
+}
+
+package "utils" {
+    class ConsoleLogger <<Singleton>>
+    class InputValidator
+}
+
+package "exceptions" {
+    class LibraryException
+    class InvalidBookDataException
+    class BookNotFoundException
+}
+
+
+' --- Relazioni di Ereditarietà/Implementazione ---
+LibraryException <|-- InvalidBookDataException
+LibraryException <|-- BookNotFoundException
+
+LibraryItem <|-- Book
+LibraryItem <|-- BookCollection
+
+StorageService <|-- FileStorageService
+SortStrategy <|-- SortByTitleStrategy
+SortStrategy <|-- SortByAuthorStrategy
+
+
+' --- Relazioni di Dipendenza ---
+Main --> CommandLineInterface
+Main --> LibraryService
+
+CommandLineInterface --> LibraryService
+CommandLineInterface --> BookFactory
+CommandLineInterface --> InputValidator
+
+LibraryService --> StorageService
+LibraryService --> SortStrategy
+
+BookCollection --> LibraryItem
+Book --> BookBuilder
+
+FileStorageService --> Book
+ConsoleLogger --> LogLevel
+InputValidator --> ConsoleLogger
+
+@enduml
+
