@@ -49,7 +49,7 @@ public class CommandLineInterface {
      */
     public void start() {
         logger.logInfo("Interfaccia a riga di comando avviata.");
-        System.out.println("Benvenuto nel Sistema di Gestione Libreria Personale (Versione Semplificata)!");
+        System.out.println("Benvenuto nel Sistema di Gestione Libreria Personale!");
 
         String fullDefaultPath = DEFAULT_DIRECTORY_NAME + File.separator + DEFAULT_FILENAME;
 
